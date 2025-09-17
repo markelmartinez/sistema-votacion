@@ -1,3 +1,201 @@
-<!doctype html><meta charset="utf-8">
-<title>OK · GitHub Pages</title>
-<h1>Funciona 🎉</h1><p>Si ves esto, Pages está activo.</p>
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Concurso de Pintxos — Jurado Popular</title>
+  <meta name="theme-color" content="#111" />
+  <style>
+    :root{--border:#eee;--muted:#666;--ink:#111}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial}
+    header{position:sticky;top:0;background:#fff;padding:12px 16px;border-bottom:1px solid var(--border);z-index:5}
+    h1{font-size:20px;margin:0}
+    .tabs{display:flex;gap:8px;margin-top:8px}
+    .tab{padding:8px 12px;border:1px solid #ddd;border-radius:999px;cursor:pointer;background:#fff}
+    .tab.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+    main{padding:16px}
+    .search{width:100%;padding:10px 12px;border:1px solid #ddd;border-radius:8px;margin-bottom:16px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+    .card{border:1px solid var(--border);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;background:#fff}
+    .photo{width:100%;height:160px;object-fit:cover;background:#f6f6f6}
+    .content{padding:12px;display:flex;flex-direction:column;gap:6px}
+    .title{font-weight:700}.address{color:var(--muted);font-size:14px}
+    .actions{display:flex;gap:8px;margin-top:8px}
+    .btn{flex:1;text-align:center;text-decoration:none;border:1px solid var(--ink);border-radius:999px;padding:10px 12px;color:var(--ink)}
+    .btn.primary{background:var(--ink);color:#fff}
+    .empty{color:#777;text-align:center;padding:40px}
+    .rank-wrap{max-width:960px;margin:0 auto}
+    table{width:100%;border-collapse:collapse;border:1px solid var(--border);border-radius:12px;overflow:hidden;background:#fff}
+    thead th{background:#f8f8f8;text-align:left;font-weight:700}
+    th, td{padding:10px;border-bottom:1px solid #f0f0f0}
+    tr:nth-child(even) td{background:#fcfcfc}
+    .pos{width:48px;text-align:center;font-variant-numeric:tabular-nums}
+    .num{text-align:right;font-variant-numeric:tabular-nums}
+    .updated{color:#888;font-size:12px;margin:8px 0 16px}
+    footer{color:#888;font-size:12px;text-align:center;padding:24px}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Concurso de Pintxos — Jurado Popular</h1>
+    <div class="tabs">
+      <button id="tab-bares" class="tab active">Bares</button>
+      <button id="tab-ranking" class="tab">Clasificación</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- Vista Bares -->
+    <section id="view-bares">
+      <input id="search" class="search" placeholder="Busca por nombre o dirección..." />
+      <div id="grid" class="grid"></div>
+      <div id="empty" class="empty" style="display:none">No hay resultados.</div>
+    </section>
+
+    <!-- Vista Ranking -->
+    <section id="view-ranking" style="display:none">
+      <div class="rank-wrap">
+        <div class="updated" id="rank-updated"></div>
+        <table>
+          <thead>
+            <tr>
+              <th class="pos">#</th>
+              <th>Bar</th>
+              <th class="num">Puntos</th>
+              <th class="num">Votos</th>
+              <th class="num">Media</th>
+            </tr>
+          </thead>
+          <tbody id="rank-tbody"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer>Votación 1–10 · Un voto por persona y bar · © Auzoa</footer>
+
+  <script>
+    // ✅ URLs GViz reales de tu documento
+    const GVIZ_URL_BARES   =
+      "https://docs.google.com/spreadsheets/d/1o9-3b-GwN8Z8QEmTIBTAahP8sXPF8oMrn-AB7MQMTew/gviz/tq?tqx=out:json&gid=2039727451&tq=select%20A,C,E,G&headers=1";
+    const GVIZ_URL_RANKING =
+      "https://docs.google.com/spreadsheets/d/1o9-3b-GwN8Z8QEmTIBTAahP8sXPF8oMrn-AB7MQMTew/gviz/tq?tqx=out:json&sheet=Ranking";
+
+    async function fetchGViz(url){
+      const res = await fetch(url);
+      const text = await res.text();
+      const start = text.indexOf('{');
+      const end   = text.lastIndexOf('}');
+      return JSON.parse(text.slice(start, end + 1));
+    }
+
+    async function fetchBares(){
+      const json = await fetchGViz(GVIZ_URL_BARES);
+      const rows = json.table?.rows || [];
+      return rows
+        .map(r => ({
+          nombre:    r.c?.[0]?.v || "",
+          link:      r.c?.[1]?.v || "",
+          direccion: r.c?.[2]?.v || "",
+          foto:      r.c?.[3]?.v || ""
+        }))
+        // Filtra filas vacías o la cabecera por si llega como dato
+        .filter(b => b.nombre && b.nombre !== "Bar" && b.link);
+    }
+
+    async function fetchRanking(){
+      const json = await fetchGViz(GVIZ_URL_RANKING);
+      const rows = json.table?.rows || [];
+      const data = rows.map(r => ({
+        bar:    r.c?.[0]?.v || "",
+        votos:  Number(r.c?.[1]?.v ?? 0),
+        media:  Number(r.c?.[2]?.v ?? 0),
+        puntos: Number(r.c?.[3]?.v ?? 0)
+      }));
+      data.sort((a,b) => (b.puntos - a.puntos) || (b.votos - a.votos));
+      return data;
+    }
+
+    // ---- UI: Bares ----
+    const grid  = document.getElementById('grid');
+    const empty = document.getElementById('empty');
+    const search= document.getElementById('search');
+
+    function renderBares(list){
+      grid.innerHTML = '';
+      list.forEach(b => {
+        const card = document.createElement('div'); card.className='card';
+
+        const img = document.createElement('img');
+        img.className='photo'; img.alt=b.nombre; img.loading='lazy';
+        img.src = (b.foto||'').trim() || 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==';
+
+        const content=document.createElement('div'); content.className='content';
+        const title=document.createElement('div'); title.className='title'; title.textContent=b.nombre;
+        const addr=document.createElement('div'); addr.className='address';
+        if (b.direccion) addr.textContent = b.direccion.trim();
+
+        const actions=document.createElement('div'); actions.className='actions';
+        const votar=document.createElement('a'); votar.className='btn primary'; votar.href=b.link; votar.target='_blank'; votar.rel='noopener noreferrer'; votar.textContent='Votar 1–10';
+        const maps=document.createElement('a'); maps.className='btn'; maps.href='https://www.google.com/maps/search/'+encodeURIComponent(b.nombre+' '+(b.direccion||'')); maps.target='_blank'; maps.rel='noopener noreferrer'; maps.textContent='Cómo llegar';
+
+        actions.appendChild(votar); actions.appendChild(maps);
+        content.appendChild(title); if (b.direccion) content.appendChild(addr); content.appendChild(actions);
+        card.appendChild(img); card.appendChild(content);
+        grid.appendChild(card);
+      });
+      empty.style.display = list.length ? 'none' : 'block';
+    }
+
+    // ---- UI: Ranking ----
+    const rankBody    = document.getElementById('rank-tbody');
+    const rankUpdated = document.getElementById('rank-updated');
+
+    function renderRanking(rows){
+      rankBody.innerHTML = '';
+      rows.forEach((r,i) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td class="pos">${i+1}</td>
+          <td>${r.bar}</td>
+          <td class="num">${r.puntos}</td>
+          <td class="num">${r.votos}</td>
+          <td class="num">${r.media.toFixed(2)}</td>
+        `;
+        rankBody.appendChild(tr);
+      });
+      rankUpdated.textContent = "Actualizado: " + new Date().toLocaleString();
+    }
+
+    // Tabs
+    const tabBares=document.getElementById('tab-bares'), tabRanking=document.getElementById('tab-ranking');
+    const viewBares=document.getElementById('view-bares'), viewRanking=document.getElementById('view-ranking');
+    tabBares.onclick=()=>{tabBares.classList.add('active');tabRanking.classList.remove('active');viewBares.style.display='';viewRanking.style.display='none';};
+    tabRanking.onclick=()=>{tabRanking.classList.add('active');tabBares.classList.remove('active');viewRanking.style.display='';viewBares.style.display='none';};
+
+    // Búsqueda
+    let LISTA=[];
+    function filtrar(){
+      const q=search.value.trim().toLowerCase();
+      renderBares(LISTA.filter(b =>
+        b.nombre.toLowerCase().includes(q) ||
+        (b.direccion||'').toLowerCase().includes(q)
+      ));
+    }
+    search.addEventListener('input', filtrar);
+
+    // Carga inicial
+    (async () => {
+      try {
+        LISTA = await fetchBares(); renderBares(LISTA);
+        const rank = await fetchRanking(); renderRanking(rank);
+      } catch(e){
+        console.error(e);
+        empty.style.display='block';
+        empty.textContent='No se han podido cargar los datos.';
+      }
+    })();
+  </script>
+</body>
+</html>
