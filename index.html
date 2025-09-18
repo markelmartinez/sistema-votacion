@@ -83,12 +83,14 @@
       "https://docs.google.com/spreadsheets/d/1o9-3b-GwN8Z8QEmTIBTAahP8sXPF8oMrn-AB7MQMTew/gviz/tq?tqx=out:json&sheet=Ranking";
 
     async function fetchGViz(url){
-      const res = await fetch(url);
+      const nocache = (url.includes("?") ? "&" : "?") + "_=" + Date.now();
+      const res = await fetch(url + nocache);
       const text = await res.text();
       const start = text.indexOf('{');
       const end   = text.lastIndexOf('}');
       return JSON.parse(text.slice(start, end + 1));
     }
+
 
     async function fetchBares(){
       const json = await fetchGViz(GVIZ_URL_BARES);
