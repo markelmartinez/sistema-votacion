@@ -13,21 +13,20 @@
 
   <style>
     :root{
-      --ink:#0f172a;            /* texto principal */
-      --muted:#667085;          /* texto secundario */
-      --border:#e6e8ec;         /* bordes suaves */
-      --brand:#ff6b00;          /* naranja marca */
-      --brand-2:#0ea5e9;        /* azul */
-      --brand-3:#10b981;        /* verde */
+      --ink:#0f172a;
+      --muted:#667085;
+      --border:#e6e8ec;
+      --brand:#ff6b00;
+      --brand-2:#0ea5e9;
+      --brand-3:#10b981;
       --chip:#f1f5f9;
-      --hero-base:#a85f2b;      /* color de respaldo parecido a la imagen */
+      --hero-base:#a85f2b;
     }
     *{box-sizing:border-box}
     html,body{margin:0;overflow-x:hidden}
     body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial;background:#fafafa;color:var(--ink)}
     a{color:inherit}
 
-    /* ======= HERO (full-bleed, fallback color, gradiente reforzado, zoom out) ======= */
     header{
       position: sticky; top: 0; z-index: 8; border-bottom: 1px solid var(--border);
       background:
@@ -41,30 +40,25 @@
       background-color: var(--hero-base);
       background-position: center;
       background-repeat: no-repeat;
-      /* Zoom de la imagen: 1 = normal, 0.85 = “zoom out” */
       background-size: calc(100% * var(--hero-zoom, 1));
       color:#fff;
-
-      /* full-bleed: ocupa todo el viewport de ancho aunque el contenido esté centrado */
       width: 100vw; max-width: 100vw;
       margin-left: calc(50% - 50vw);
       margin-right: calc(50% - 50vw);
     }
     .hero{
       padding: 18px 16px 12px;
-      min-height: 240px;   /* ↑ sube este valor (260–300) para ver más foto */
+      min-height: 240px;
       display:flex; flex-direction:column; justify-content:flex-end;
       backdrop-filter:saturate(120%);
     }
     .topbar{display:flex;align-items:center;gap:12px;justify-content:space-between}
     h1{
       margin:0;font-size:20px;line-height:1.2;
-      /* pastilla de contraste para legibilidad del título */
       display:inline-block;padding:6px 10px;border-radius:10px;
       background: rgba(0,0,0,.35); text-shadow: 0 2px 10px rgba(0,0,0,.45);
     }
 
-    /* ===== Slogan festivo centrado + logo debajo ===== */
     .slogan-wrap{width:100%; text-align:center; margin:10px 0 8px;}
     .slogan{
       font-family:"Pacifico", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, cursive;
@@ -80,22 +74,18 @@
     }
     .slogan-logo-wrap{ text-align:center; margin-top:6px; }
     .slogan-logo{
-      height:64px;               /* antes 34px */
-      width:auto;
+      height:64px; width:auto;
       filter: drop-shadow(0 2px 8px rgba(0,0,0,.35));
     }
-    @media (min-width: 900px){
-      .slogan-logo{ height:72px; }
-    }
+    @media (min-width: 900px){ .slogan-logo{ height:72px; } }
 
     .lang{display:flex;gap:8px}
     .pill{padding:7px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.6);background:rgba(255,255,255,.08);color:#fff;cursor:pointer}
     .pill.active{background:#fff;color:#111;border-color:#fff}
-    .tabs{display:flex;gap:8px;margin-top:10px}
+    .tabs{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
     .tab{padding:9px 14px;border:1px solid rgba(255,255,255,.7);border-radius:999px;background:rgba(255,255,255,.1);cursor:pointer;color:#fff;backdrop-filter:blur(4px)}
     .tab.active{background:#fff;color:#111;border-color:#fff;box-shadow:0 2px 10px rgba(0,0,0,.08)}
 
-    /* ======= MAIN ======= */
     main{padding:16px;max-width:1200px;margin:0 auto}
     .search{width:100%;padding:12px 14px;border:1px solid var(--border);border-radius:12px;margin-bottom:16px;background:#fff}
     .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
@@ -112,7 +102,6 @@
     .btn.ghost:hover{background:#111;color:#fff}
     .empty{color:#777;text-align:center;padding:40px}
 
-    /* ======= Ranking ======= */
     .rank-wrap{max-width:960px;margin:0 auto}
     table{width:100%;border-collapse:collapse;border:1px solid var(--border);border-radius:14px;overflow:hidden;background:#fff}
     thead th{background:#f8fafc;text-align:left;font-weight:800}
@@ -121,10 +110,10 @@
     .chip{display:inline-block;padding:4px 8px;border-radius:999px;background:var(--chip);font-size:12px;color:#0f172a}
     .pos{width:48px;text-align:center;font-variant-numeric:tabular-nums}
     .num{text-align:right;font-variant-numeric:tabular-nums}
-    .updated{color:#888;font-size:12px;margin:8px 0 16px}
+    .updated{color:#888;font-size:12px;margin:8px 0 6px}
+    .criteria-note{color:#6b7280;font-size:14px;margin:0 0 16px}
     footer{color:#888;font-size:12px;text-align:center;padding:28px}
 
-    /* idioma pills colores */
     #btn-es.active{background:var(--brand-2)!important;border-color:var(--brand-2)!important;color:#fff}
     #btn-eu.active{background:var(--brand-3)!important;border-color:var(--brand-3)!important;color:#fff}
   </style>
@@ -140,7 +129,6 @@
         </div>
       </div>
 
-      <!-- Slogan + logo debajo -->
       <div class="slogan-wrap">
         <div class="slogan">Gora Uribarri eta Matikoko jaiak!</div>
         <div class="slogan-logo-wrap">
@@ -154,7 +142,7 @@
 
       <div class="tabs">
         <button id="tab-bares" class="tab active">Bares</button>
-        <button id="tab-ranking" class="tab">Clasificación</button>
+        <button id="tab-ranking" class="tab">Clasificacion en vivo</button>
       </div>
     </div>
   </header>
@@ -171,6 +159,7 @@
     <section id="view-ranking" style="display:none">
       <div class="rank-wrap">
         <div class="updated" id="rank-updated"></div>
+        <p class="criteria-note" id="criteria-note"></p>
         <table>
           <thead>
             <tr>
@@ -191,14 +180,12 @@
 
   <script>
     /* ========= Config ========= */
-    // Imagen de fondo del encabezado (en tu repo):
     const HERO_IMG = "https://markelmartinez.github.io/sistema-votacion/pintxos.jpg";
-    // Aplica imagen + zoom out. Ajusta 0.80–0.95 si quieres.
     const dynStyle = document.createElement('style');
     dynStyle.textContent = `header{ --hero: url('${HERO_IMG}'); --hero-zoom: 0.85; }`;
     document.head.appendChild(dynStyle);
 
-    // URLs GViz (Sheet: columnas A,C,F,H)  **F = Dirección**
+    // A,C,F,H -> nombre, enlace, dirección, foto
     const GVIZ_URL_BARES =
       "https://docs.google.com/spreadsheets/d/1o9-3b-GwN8Z8QEmTIBTAahP8sXPF8oMrn-AB7MQMTew/gviz/tq?tqx=out:json&gid=2039727451&tq=select%20A,C,F,H&headers=1";
     const GVIZ_URL_RANKING =
@@ -209,7 +196,7 @@
       es: {
         title: "Concurso de Pintxos — Jurado Popular",
         tab_bares: "Bares",
-        tab_rank: "Clasificación",
+        tab_rank: "Clasificacion en vivo",
         search: "Busca por nombre o dirección...",
         empty: "No hay resultados.",
         voteBtn: "Votar 1–10",
@@ -219,12 +206,13 @@
         th_pts: "Puntos",
         th_votes: "Votos",
         th_avg: "Media",
+        criteria: "Ganador: el bar con más puntos. En caso de empate, se tendrá en cuenta la media y después el número de votos.",
         footer: "Votación 1–10 · Un voto por persona y bar · © Auzotik auzoarentzat",
       },
       eu: {
         title: "Pintxo Lehiaketa — Epaimahai Herrikoia",
         tab_bares: "Tabernak",
-        tab_rank: "Sailkapena",
+        tab_rank: "Sailkapena zuzenean",
         search: "Bilatu izenaren edo helbidearen arabera...",
         empty: "Emaitzik ez.",
         voteBtn: "Bozkatu 1-10",
@@ -234,6 +222,7 @@
         th_pts: "Puntuak",
         th_votes: "Bozkak",
         th_avg: "Batezbestekoa",
+        criteria: "Irabazlea: puntu gehien dituen taberna. Berdinketa gertatuz gero, batezbestekoa eta ondoren bozk kopurua hartuko dira kontuan.",
         footer: "Bozketa 1–10 · Pertsona eta taberna bakoitzeko bozka bakarra · © Auzotik auzoarentzat",
       }
     };
@@ -257,18 +246,16 @@
       document.getElementById('th-puntos').textContent = t.th_pts;
       document.getElementById('th-votos').textContent = t.th_votes;
       document.getElementById('th-media').textContent = t.th_avg;
+      document.getElementById('criteria-note').textContent = t.criteria;
       document.getElementById('footer').textContent = t.footer;
 
-      // botones dinámicos de las tarjetas
       document.querySelectorAll('[data-i18n="voteBtn"]').forEach(a => a.textContent = t.voteBtn);
       document.querySelectorAll('[data-i18n="mapsBtn"]').forEach(a => a.textContent = t.mapsBtn);
 
-      // activar pills
       document.getElementById('btn-es').classList.toggle('active', LANG==='es');
       document.getElementById('btn-eu').classList.toggle('active', LANG==='eu');
     }
 
-    /* ========= GViz helpers (anti-caché) ========= */
     async function fetchGViz(url){
       const nocache = (url.includes("?") ? "&" : "?") + "_=" + Date.now();
       const res = await fetch(url + nocache);
@@ -285,7 +272,7 @@
         .map(r => ({
           nombre:    r.c?.[0]?.v || "",
           link:      r.c?.[1]?.v || "",
-          direccion: r.c?.[2]?.v || "",  // <- columna F
+          direccion: r.c?.[2]?.v || "",
           foto:      r.c?.[3]?.v || ""
         }))
         .filter(b => b.nombre && b.nombre !== "Bar" && b.link);
@@ -300,11 +287,15 @@
         media:  Number(r.c?.[2]?.v ?? 0),
         puntos: Number(r.c?.[3]?.v ?? 0)
       }));
-      data.sort((a,b) => (b.puntos - a.puntos) || (b.votos - a.votos));
+      // Orden: puntos > media > votos (coincide con la nota)
+      data.sort((a,b) =>
+        (b.puntos - a.puntos) ||
+        (b.media  - a.media)  ||
+        (b.votos  - a.votos)
+      );
       return data;
     }
 
-    /* ========= UI: Bares ========= */
     const grid  = document.getElementById('grid');
     const empty = document.getElementById('empty');
     const search= document.getElementById('search');
@@ -327,12 +318,9 @@
         const actions=document.createElement('div'); actions.className='actions';
         const votar=document.createElement('a'); votar.className='btn primary'; votar.href=b.link; votar.target='_blank'; votar.rel='noopener noreferrer'; votar.dataset.i18n="voteBtn"; votar.textContent=t.voteBtn;
 
-        // Buscar en Maps (o navega directo con dir/?api=1)
         const maps=document.createElement('a');
         maps.className='btn ghost';
         maps.href='https://www.google.com/maps/search/'+encodeURIComponent(b.nombre+' '+(b.direccion||''));
-        // Alternativa navegación directa:
-        // maps.href='https://www.google.com/maps/dir/?api=1&destination='+encodeURIComponent(b.nombre+' '+(b.direccion||''));
         maps.target='_blank'; maps.rel='noopener noreferrer';
         maps.dataset.i18n="mapsBtn"; maps.textContent=t.mapsBtn;
 
@@ -344,12 +332,10 @@
       empty.style.display = list.length ? 'none' : 'block';
     }
 
-    /* ========= UI: Ranking ========= */
     const rankBody    = document.getElementById('rank-tbody');
     const rankUpdated = document.getElementById('rank-updated');
 
     function renderRanking(rows){
-      const t = I18N[LANG];
       rankBody.innerHTML = '';
       rows.forEach((r,i) => {
         const tr = document.createElement('tr');
@@ -362,16 +348,15 @@
         `;
         rankBody.appendChild(tr);
       });
+      const t = I18N[LANG];
       rankUpdated.textContent = `${t.updated} ${new Date().toLocaleString()}`;
     }
 
-    /* ========= Tabs ========= */
     const tabBares=document.getElementById('tab-bares'), tabRanking=document.getElementById('tab-ranking');
     const viewBares=document.getElementById('view-bares'), viewRanking=document.getElementById('view-ranking');
     tabBares.onclick=()=>{tabBares.classList.add('active');tabRanking.classList.remove('active');viewBares.style.display='';viewRanking.style.display='none';};
     tabRanking.onclick=()=>{tabRanking.classList.add('active');tabBares.classList.remove('active');viewRanking.style.display='';viewBares.style.display='none';};
 
-    /* ========= Búsqueda ========= */
     let LISTA=[];
     function filtrar(){
       const q=search.value.trim().toLowerCase();
@@ -382,11 +367,9 @@
     }
     search.addEventListener('input', filtrar);
 
-    /* ========= Idioma ========= */
     document.getElementById('btn-es').onclick = ()=>{ LANG='es'; localStorage.setItem('lang','es'); applyI18n(); filtrar(); renderRankingCache(); history.replaceState(null,"",location.pathname+"?lang=es"); };
     document.getElementById('btn-eu').onclick = ()=>{ LANG='eu'; localStorage.setItem('lang','eu'); applyI18n(); filtrar(); renderRankingCache(); history.replaceState(null,"",location.pathname+"?lang=eu"); };
 
-    /* ========= Carga inicial ========= */
     let RANK_CACHE=[];
     function renderRankingCache(){ if(RANK_CACHE.length) renderRanking(RANK_CACHE); }
 
@@ -404,6 +387,3 @@
   </script>
 </body>
 </html>
-
-
-
