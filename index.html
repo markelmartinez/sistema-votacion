@@ -13,20 +13,21 @@
 
   <style>
     :root{
-      --ink:#0f172a;
-      --muted:#667085;
-      --border:#e6e8ec;
-      --brand:#ff6b00;
-      --brand-2:#0ea5e9;
-      --brand-3:#10b981;
+      --ink:#0f172a;            /* texto principal */
+      --muted:#667085;          /* texto secundario */
+      --border:#e6e8ec;         /* bordes suaves */
+      --brand:#ff6b00;          /* naranja marca */
+      --brand-2:#0ea5e9;        /* azul */
+      --brand-3:#10b981;        /* verde */
       --chip:#f1f5f9;
-      --hero-base:#a85f2b;
+      --hero-base:#a85f2b;      /* color respaldo */
     }
     *{box-sizing:border-box}
     html,body{margin:0;overflow-x:hidden}
     body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial;background:#fafafa;color:var(--ink)}
     a{color:inherit}
 
+    /* ======= HERO ======= */
     header{
       position: sticky; top: 0; z-index: 8; border-bottom: 1px solid var(--border);
       background:
@@ -40,8 +41,9 @@
       background-color: var(--hero-base);
       background-position: center;
       background-repeat: no-repeat;
-      background-size: calc(100% * var(--hero-zoom, 1));
+      background-size: calc(100% * var(--hero-zoom, 0.82));  /* zoom-out */
       color:#fff;
+
       width: 100vw; max-width: 100vw;
       margin-left: calc(50% - 50vw);
       margin-right: calc(50% - 50vw);
@@ -59,6 +61,7 @@
       background: rgba(0,0,0,.35); text-shadow: 0 2px 10px rgba(0,0,0,.45);
     }
 
+    /* Slogan centrado + logo */
     .slogan-wrap{width:100%; text-align:center; margin:10px 0 8px;}
     .slogan{
       font-family:"Pacifico", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, cursive;
@@ -82,10 +85,11 @@
     .lang{display:flex;gap:8px}
     .pill{padding:7px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.6);background:rgba(255,255,255,.08);color:#fff;cursor:pointer}
     .pill.active{background:#fff;color:#111;border-color:#fff}
-    .tabs{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+    .tabs{display:flex;gap:8px;margin-top:10px}
     .tab{padding:9px 14px;border:1px solid rgba(255,255,255,.7);border-radius:999px;background:rgba(255,255,255,.1);cursor:pointer;color:#fff;backdrop-filter:blur(4px)}
     .tab.active{background:#fff;color:#111;border-color:#fff;box-shadow:0 2px 10px rgba(0,0,0,.08)}
 
+    /* ======= MAIN ======= */
     main{padding:16px;max-width:1200px;margin:0 auto}
     .search{width:100%;padding:12px 14px;border:1px solid var(--border);border-radius:12px;margin-bottom:16px;background:#fff}
     .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
@@ -102,7 +106,9 @@
     .btn.ghost:hover{background:#111;color:#fff}
     .empty{color:#777;text-align:center;padding:40px}
 
+    /* ======= Ranking ======= */
     .rank-wrap{max-width:960px;margin:0 auto}
+    .note{font-size:13px;color:#475569;margin:8px 0 14px}
     table{width:100%;border-collapse:collapse;border:1px solid var(--border);border-radius:14px;overflow:hidden;background:#fff}
     thead th{background:#f8fafc;text-align:left;font-weight:800}
     th, td{padding:10px;border-bottom:1px solid #eef2f7}
@@ -110,10 +116,10 @@
     .chip{display:inline-block;padding:4px 8px;border-radius:999px;background:var(--chip);font-size:12px;color:#0f172a}
     .pos{width:48px;text-align:center;font-variant-numeric:tabular-nums}
     .num{text-align:right;font-variant-numeric:tabular-nums}
-    .updated{color:#888;font-size:12px;margin:8px 0 6px}
-    .criteria-note{color:#6b7280;font-size:14px;margin:0 0 16px}
+    .updated{color:#888;font-size:12px;margin:8px 0 16px}
     footer{color:#888;font-size:12px;text-align:center;padding:28px}
 
+    /* idioma pills colores */
     #btn-es.active{background:var(--brand-2)!important;border-color:var(--brand-2)!important;color:#fff}
     #btn-eu.active{background:var(--brand-3)!important;border-color:var(--brand-3)!important;color:#fff}
   </style>
@@ -129,20 +135,19 @@
         </div>
       </div>
 
+      <!-- Slogan + logo -->
       <div class="slogan-wrap">
         <div class="slogan">Gora Uribarri eta Matikoko jaiak!</div>
         <div class="slogan-logo-wrap">
           <img class="slogan-logo"
                src="https://markelmartinez.github.io/sistema-votacion/urtiko.png"
-               alt="Logo"
-               loading="eager"
-               decoding="async" />
+               alt="Logo" loading="eager" decoding="async" />
         </div>
       </div>
 
       <div class="tabs">
         <button id="tab-bares" class="tab active">Bares</button>
-        <button id="tab-ranking" class="tab">Clasificacion en vivo</button>
+        <button id="tab-ranking" class="tab">Clasificación en vivo</button>
       </div>
     </div>
   </header>
@@ -155,11 +160,11 @@
       <div id="empty" class="empty" style="display:none">No hay resultados.</div>
     </section>
 
-    <!-- Vista Ranking -->
+    <!-- Vista Ranking (desde 15 hojas de respuestas) -->
     <section id="view-ranking" style="display:none">
       <div class="rank-wrap">
+        <div class="note" id="rank-note"></div>
         <div class="updated" id="rank-updated"></div>
-        <p class="criteria-note" id="criteria-note"></p>
         <table>
           <thead>
             <tr>
@@ -179,34 +184,52 @@
   <footer id="footer">Votación 1–10 · Un voto por persona y bar · © Auzotik auzoarentzat</footer>
 
   <script>
-    /* ========= Config ========= */
+    /* ========= Config de hero ========= */
     const HERO_IMG = "https://markelmartinez.github.io/sistema-votacion/pintxos.jpg";
     const dynStyle = document.createElement('style');
-    dynStyle.textContent = `header{ --hero: url('${HERO_IMG}'); --hero-zoom: 0.85; }`;
+    dynStyle.textContent = `header{ --hero: url('${HERO_IMG}'); --hero-zoom: 0.82; }`;
     document.head.appendChild(dynStyle);
 
-    // A,C,F,H -> nombre, enlace, dirección, foto
+    /* ========= BARES (para la pestaña de listado) ========= */
     const GVIZ_URL_BARES =
       "https://docs.google.com/spreadsheets/d/1o9-3b-GwN8Z8QEmTIBTAahP8sXPF8oMrn-AB7MQMTew/gviz/tq?tqx=out:json&gid=2039727451&tq=select%20A,C,F,H&headers=1";
-    const GVIZ_URL_RANKING =
-      "https://docs.google.com/spreadsheets/d/1o9-3b-GwN8Z8QEmTIBTAahP8sXPF8oMrn-AB7MQMTew/gviz/tq?tqx=out:json&sheet=Ranking";
+
+    /* ========= Respuestas individuales: 15 hojas (columna B) ========= */
+    // Pega aquí el bloque que me diste:
+    const RESP_SHEETS = [
+      { bar: "Lis Bar",            url: "https://docs.google.com/spreadsheets/d/1o9-3b-GwN8Z8QEmTIBTAahP8sXPF8oMrn-AB7MQMTew/gviz/tq?tqx=out:json&gid=1796407127&tq=select%20B%20where%20B%20is%20not%20null" },
+      { bar: "Los Cachorros",      url: "https://docs.google.com/spreadsheets/d/1o9-3b-GwN8Z8QEmTIBTAahP8sXPF8oMrn-AB7MQMTew/gviz/tq?tqx=out:json&gid=1010400679&tq=select%20B%20where%20B%20is%20not%20null" },
+      { bar: "Bar JOTAELE",        url: "https://docs.google.com/spreadsheets/d/1o9-3b-GwN8Z8QEmTIBTAahP8sXPF8oMrn-AB7MQMTew/gviz/tq?tqx=out:json&gid=1805050055&tq=select%20B%20where%20B%20is%20not%20null" },
+      { bar: "Ilunabar",           url: "https://docs.google.com/spreadsheets/d/1o9-3b-GwN8Z8QEmTIBTAahP8sXPF8oMrn-AB7MQMTew/gviz/tq?tqx=out:json&gid=811862483&tq=select%20B%20where%20B%20is%20not%20null" },
+      { bar: "Bar Gautxori",       url: "https://docs.google.com/spreadsheets/d/1o9-3b-GwN8Z8QEmTIBTAahP8sXPF8oMrn-AB7MQMTew/gviz/tq?tqx=out:json&gid=332167619&tq=select%20B%20where%20B%20is%20not%20null" },
+      { bar: "Bar Los Arcos",      url: "https://docs.google.com/spreadsheets/d/1o9-3b-GwN8Z8QEmTIBTAahP8sXPF8oMrn-AB7MQMTew/gviz/tq?tqx=out:json&gid=1972164162&tq=select%20B%20where%20B%20is%20not%20null" },
+      { bar: "Bar Matiko Berria",  url: "https://docs.google.com/spreadsheets/d/1o9-3b-GwN8Z8QEmTIBTAahP8sXPF8oMrn-AB7MQMTew/gviz/tq?tqx=out:json&gid=320720467&tq=select%20B%20where%20B%20is%20not%20null" },
+      { bar: "Bar Aldapa",         url: "https://docs.google.com/spreadsheets/d/1o9-3b-GwN8Z8QEmTIBTAahP8sXPF8oMrn-AB7MQMTew/gviz/tq?tqx=out:json&gid=2073755075&tq=select%20B%20where%20B%20is%20not%20null" },
+      { bar: "Bar Plaza",          url: "https://docs.google.com/spreadsheets/d/1o9-3b-GwN8Z8QEmTIBTAahP8sXPF8oMrn-AB7MQMTew/gviz/tq?tqx=out:json&gid=964840681&tq=select%20B%20where%20B%20is%20not%20null" },
+      { bar: "JL Berria",          url: "https://docs.google.com/spreadsheets/d/1o9-3b-GwN8Z8QEmTIBTAahP8sXPF8oMrn-AB7MQMTew/gviz/tq?tqx=out:json&gid=1096206920&tq=select%20B%20where%20B%20is%20not%20null" },
+      { bar: "Batzoki Matiko",     url: "https://docs.google.com/spreadsheets/d/1o9-3b-GwN8Z8QEmTIBTAahP8sXPF8oMrn-AB7MQMTew/gviz/tq?tqx=out:json&gid=1135722815&tq=select%20B%20where%20B%20is%20not%20null" },
+      { bar: "Goileku",            url: "https://docs.google.com/spreadsheets/d/1o9-3b-GwN8Z8QEmTIBTAahP8sXPF8oMrn-AB7MQMTew/gviz/tq?tqx=out:json&gid=2045819590&tq=select%20B%20where%20B%20is%20not%20null" },
+      { bar: "Bar Anduriña",       url: "https://docs.google.com/spreadsheets/d/1o9-3b-GwN8Z8QEmTIBTAahP8sXPF8oMrn-AB7MQMTew/gviz/tq?tqx=out:json&gid=2011239631&tq=select%20B%20where%20B%20is%20not%20null" },
+      { bar: "Uribarri Elkartea",  url: "https://docs.google.com/spreadsheets/d/1o9-3b-GwN8Z8QEmTIBTAahP8sXPF8oMrn-AB7MQMTew/gviz/tq?tqx=out:json&gid=1893866548&tq=select%20B%20where%20B%20is%20not%20null" },
+      { bar: "Bar el Final",       url: "https://docs.google.com/spreadsheets/d/1o9-3b-GwN8Z8QEmTIBTAahP8sXPF8oMrn-AB7MQMTew/gviz/tq?tqx=out:json&gid=1250406739&tq=select%20B%20where%20B%20is%20not%20null" },
+    ];
 
     /* ========= i18n ========= */
     const I18N = {
       es: {
         title: "Concurso de Pintxos — Jurado Popular",
         tab_bares: "Bares",
-        tab_rank: "Clasificacion en vivo",
+        tab_rank: "Clasificación en vivo",
         search: "Busca por nombre o dirección...",
         empty: "No hay resultados.",
         voteBtn: "Votar 1–10",
         mapsBtn: "Cómo llegar",
         updated: "Actualizado:",
+        note: "Ganará el bar con más puntos (suma de todas las notas). En caso de empate: más votos.",
         th_bar: "Bar",
         th_pts: "Puntos",
         th_votes: "Votos",
         th_avg: "Media",
-        criteria: "Ganador: el bar con más puntos. En caso de empate, se tendrá en cuenta la media y después el número de votos.",
         footer: "Votación 1–10 · Un voto por persona y bar · © Auzotik auzoarentzat",
       },
       eu: {
@@ -218,11 +241,11 @@
         voteBtn: "Bozkatu 1-10",
         mapsBtn: "Nola iritsi",
         updated: "Eguneratua:",
+        note: "Irabazlea punturik gehien duen taberna izango da (nota guztien batura). Berdinketan: boz gehien.",
         th_bar: "Taberna",
         th_pts: "Puntuak",
         th_votes: "Bozkak",
         th_avg: "Batezbestekoa",
-        criteria: "Irabazlea: puntu gehien dituen taberna. Berdinketa emanez gero, batezbestekoa eta ondoren bozka kopurua hartuko dira kontuan.",
         footer: "Bozketa 1–10 · Pertsona eta taberna bakoitzeko bozka bakarra · © Auzotik auzoarentzat",
       }
     };
@@ -246,8 +269,8 @@
       document.getElementById('th-puntos').textContent = t.th_pts;
       document.getElementById('th-votos').textContent = t.th_votes;
       document.getElementById('th-media').textContent = t.th_avg;
-      document.getElementById('criteria-note').textContent = t.criteria;
       document.getElementById('footer').textContent = t.footer;
+      document.getElementById('rank-note').textContent = t.note;
 
       document.querySelectorAll('[data-i18n="voteBtn"]').forEach(a => a.textContent = t.voteBtn);
       document.querySelectorAll('[data-i18n="mapsBtn"]').forEach(a => a.textContent = t.mapsBtn);
@@ -256,6 +279,7 @@
       document.getElementById('btn-eu').classList.toggle('active', LANG==='eu');
     }
 
+    /* ========= GViz helper ========= */
     async function fetchGViz(url){
       const nocache = (url.includes("?") ? "&" : "?") + "_=" + Date.now();
       const res = await fetch(url + nocache);
@@ -265,6 +289,7 @@
       return JSON.parse(text.slice(start, end + 1));
     }
 
+    /* ========= Fetch bares (listado) ========= */
     async function fetchBares(){
       const json = await fetchGViz(GVIZ_URL_BARES);
       const rows = json.table?.rows || [];
@@ -278,24 +303,33 @@
         .filter(b => b.nombre && b.nombre !== "Bar" && b.link);
     }
 
-    async function fetchRanking(){
-      const json = await fetchGViz(GVIZ_URL_RANKING);
-      const rows = json.table?.rows || [];
-      const data = rows.map(r => ({
-        bar:    r.c?.[0]?.v || "",
-        votos:  Number(r.c?.[1]?.v ?? 0),
-        media:  Number(r.c?.[2]?.v ?? 0),
-        puntos: Number(r.c?.[3]?.v ?? 0)
+    /* ========= Fetch ranking desde 15 hojas ========= */
+    async function fetchRankingFromForms(){
+      const cargos = await Promise.all(RESP_SHEETS.map(async ({bar, url}) => {
+        try{
+          const data = await fetchGViz(url);
+          const vals = (data.table?.rows || [])
+            .map(r => r?.c?.[0]?.v)
+            .map(v => Number(String(v).replace(",", ".")))
+            .filter(v => Number.isFinite(v));      // sólo numéricos
+
+          const votos = vals.length;
+          const puntos = vals.reduce((a,b)=>a+b,0);
+          const media = votos ? (puntos / votos) : 0;
+
+          return { bar, puntos, votos, media };
+        }catch(e){
+          console.warn("Error leyendo", bar, e);
+          return { bar, puntos:0, votos:0, media:0 };
+        }
       }));
-      // Orden: puntos > media > votos (coincide con la nota)
-      data.sort((a,b) =>
-        (b.puntos - a.puntos) ||
-        (b.media  - a.media)  ||
-        (b.votos  - a.votos)
-      );
-      return data;
+
+      // ordenar por puntos desc, luego votos desc
+      cargos.sort((a,b)=> (b.puntos - a.puntos) || (b.votos - a.votos));
+      return cargos;
     }
 
+    /* ========= UI: Bares ========= */
     const grid  = document.getElementById('grid');
     const empty = document.getElementById('empty');
     const search= document.getElementById('search');
@@ -332,10 +366,12 @@
       empty.style.display = list.length ? 'none' : 'block';
     }
 
+    /* ========= UI: Ranking ========= */
     const rankBody    = document.getElementById('rank-tbody');
     const rankUpdated = document.getElementById('rank-updated');
 
     function renderRanking(rows){
+      const t = I18N[LANG];
       rankBody.innerHTML = '';
       rows.forEach((r,i) => {
         const tr = document.createElement('tr');
@@ -348,15 +384,16 @@
         `;
         rankBody.appendChild(tr);
       });
-      const t = I18N[LANG];
       rankUpdated.textContent = `${t.updated} ${new Date().toLocaleString()}`;
     }
 
+    /* ========= Tabs ========= */
     const tabBares=document.getElementById('tab-bares'), tabRanking=document.getElementById('tab-ranking');
     const viewBares=document.getElementById('view-bares'), viewRanking=document.getElementById('view-ranking');
     tabBares.onclick=()=>{tabBares.classList.add('active');tabRanking.classList.remove('active');viewBares.style.display='';viewRanking.style.display='none';};
     tabRanking.onclick=()=>{tabRanking.classList.add('active');tabBares.classList.remove('active');viewRanking.style.display='';viewBares.style.display='none';};
 
+    /* ========= Búsqueda ========= */
     let LISTA=[];
     function filtrar(){
       const q=search.value.trim().toLowerCase();
@@ -367,9 +404,11 @@
     }
     search.addEventListener('input', filtrar);
 
+    /* ========= Idioma ========= */
     document.getElementById('btn-es').onclick = ()=>{ LANG='es'; localStorage.setItem('lang','es'); applyI18n(); filtrar(); renderRankingCache(); history.replaceState(null,"",location.pathname+"?lang=es"); };
     document.getElementById('btn-eu').onclick = ()=>{ LANG='eu'; localStorage.setItem('lang','eu'); applyI18n(); filtrar(); renderRankingCache(); history.replaceState(null,"",location.pathname+"?lang=eu"); };
 
+    /* ========= Carga inicial ========= */
     let RANK_CACHE=[];
     function renderRankingCache(){ if(RANK_CACHE.length) renderRanking(RANK_CACHE); }
 
@@ -377,7 +416,7 @@
       try {
         applyI18n();
         LISTA = await fetchBares(); renderBares(LISTA);
-        RANK_CACHE = await fetchRanking(); renderRanking(RANK_CACHE);
+        RANK_CACHE = await fetchRankingFromForms(); renderRanking(RANK_CACHE);
       } catch(e){
         console.error(e);
         empty.style.display='block';
@@ -387,5 +426,3 @@
   </script>
 </body>
 </html>
-
-
