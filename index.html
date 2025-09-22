@@ -20,7 +20,7 @@
       --brand-2:#0ea5e9;        /* azul */
       --brand-3:#10b981;        /* verde */
       --chip:#f1f5f9;
-      --hero-base:#a85f2b;      /* color respaldo */
+      --hero-base:#a85f2b;      /* respaldo parecido a la imagen */
     }
     *{box-sizing:border-box}
     html,body{margin:0;overflow-x:hidden}
@@ -41,19 +41,14 @@
       background-color: var(--hero-base);
       background-position: center;
       background-repeat: no-repeat;
-      background-size: calc(100% * var(--hero-zoom, 0.82));  /* zoom-out */
+      background-size: calc(100% * var(--hero-zoom, .9)); /* zoom out */
       color:#fff;
 
       width: 100vw; max-width: 100vw;
       margin-left: calc(50% - 50vw);
       margin-right: calc(50% - 50vw);
     }
-    .hero{
-      padding: 18px 16px 12px;
-      min-height: 240px;
-      display:flex; flex-direction:column; justify-content:flex-end;
-      backdrop-filter:saturate(120%);
-    }
+    .hero{ padding:18px 16px 12px; min-height:240px; display:flex; flex-direction:column; justify-content:flex-end; backdrop-filter:saturate(120%) }
     .topbar{display:flex;align-items:center;gap:12px;justify-content:space-between}
     h1{
       margin:0;font-size:20px;line-height:1.2;
@@ -61,7 +56,7 @@
       background: rgba(0,0,0,.35); text-shadow: 0 2px 10px rgba(0,0,0,.45);
     }
 
-    /* Slogan centrado + logo */
+    /* Slogan + logo */
     .slogan-wrap{width:100%; text-align:center; margin:10px 0 8px;}
     .slogan{
       font-family:"Pacifico", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, cursive;
@@ -76,11 +71,8 @@
       background: linear-gradient(180deg, rgba(0,0,0,.18), rgba(0,0,0,.05));
     }
     .slogan-logo-wrap{ text-align:center; margin-top:6px; }
-    .slogan-logo{
-      height:64px; width:auto;
-      filter: drop-shadow(0 2px 8px rgba(0,0,0,.35));
-    }
-    @media (min-width: 900px){ .slogan-logo{ height:72px; } }
+    .slogan-logo{ height:70px; width:auto; filter: drop-shadow(0 2px 8px rgba(0,0,0,.35)); }
+    @media (min-width: 900px){ .slogan-logo{ height:80px; } }
 
     .lang{display:flex;gap:8px}
     .pill{padding:7px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.6);background:rgba(255,255,255,.08);color:#fff;cursor:pointer}
@@ -108,7 +100,6 @@
 
     /* ======= Ranking ======= */
     .rank-wrap{max-width:960px;margin:0 auto}
-    .note{font-size:13px;color:#475569;margin:8px 0 14px}
     table{width:100%;border-collapse:collapse;border:1px solid var(--border);border-radius:14px;overflow:hidden;background:#fff}
     thead th{background:#f8fafc;text-align:left;font-weight:800}
     th, td{padding:10px;border-bottom:1px solid #eef2f7}
@@ -118,7 +109,39 @@
     .num{text-align:right;font-variant-numeric:tabular-nums}
     .updated{color:#888;font-size:12px;margin:8px 0 16px}
     footer{color:#888;font-size:12px;text-align:center;padding:28px}
+    #rule{color:#666;font-size:14px;margin:10px 0 18px}
 
+    /* ======= PODIO (nuevo) ======= */
+    .podium-wrap{
+      display:none; /* visible cuando hay datos */
+      max-width:960px; margin:12px auto 18px; padding:10px 12px;
+      border:1px dashed var(--border); border-radius:14px; background:#fff;
+    }
+    .podium-title{font-weight:800;margin:4px 0 10px;display:flex;align-items:center;gap:8px}
+    .podium{
+      display:grid; grid-template-columns:1fr 1fr 1fr; align-items:end; gap:14px; padding:10px 6px 6px;
+    }
+    .step{
+      position:relative; height:180px; border-radius:14px 14px 6px 6px;
+      display:flex; align-items:flex-end; justify-content:center; padding-bottom:10px;
+      background: linear-gradient(180deg, #fff7ed, #fed7aa);
+      border:1px solid #f8c48c;
+      box-shadow: inset 0 3px 10px rgba(0,0,0,.05);
+    }
+    .step--gold{ background: linear-gradient(180deg, #fff7d6, #fde68a); border-color:#f6d34a }
+    .step--silver{ background: linear-gradient(180deg, #f8fafc, #e2e8f0); border-color:#cbd5e1 }
+    .step--bronze{ background: linear-gradient(180deg, #f7e8de, #f0ab6b); border-color:#e59e5b }
+
+    .col{display:flex; flex-direction:column; align-items:center; gap:6px}
+    .bar-name{ font-weight:800; text-align:center; max-width:180px; }
+    .points{ font-weight:700; color:#0f172a }
+    .medal{
+      position:absolute; top:-10px; left:50%; transform:translateX(-50%);
+      background:#fff; border:1px solid var(--border); border-radius:999px;
+      padding:6px 9px; font-weight:800; box-shadow:0 4px 12px rgba(0,0,0,.1)
+    }
+    .crown{ font-size:22px; position:absolute; top:-28px; left:50%; transform:translateX(-50%) rotate(-10deg) }
+    .hint{ font-size:12px; color:#6b7280; margin-top:6px; text-align:center }
     /* idioma pills colores */
     #btn-es.active{background:var(--brand-2)!important;border-color:var(--brand-2)!important;color:#fff}
     #btn-eu.active{background:var(--brand-3)!important;border-color:var(--brand-3)!important;color:#fff}
@@ -135,13 +158,14 @@
         </div>
       </div>
 
-      <!-- Slogan + logo -->
       <div class="slogan-wrap">
         <div class="slogan">Gora Uribarri eta Matikoko jaiak!</div>
         <div class="slogan-logo-wrap">
           <img class="slogan-logo"
-               src="https://markelmartinez.github.io/sistema-votacion/urtiko.png"
-               alt="Logo" loading="eager" decoding="async" />
+              src="https://markelmartinez.github.io/sistema-votacion/urtiko.png"
+              alt="Logo Auzo"
+              loading="eager"
+              decoding="async" />
         </div>
       </div>
 
@@ -160,10 +184,19 @@
       <div id="empty" class="empty" style="display:none">No hay resultados.</div>
     </section>
 
-    <!-- Vista Ranking (desde 15 hojas de respuestas) -->
+    <!-- Vista Ranking -->
     <section id="view-ranking" style="display:none">
       <div class="rank-wrap">
-        <div class="note" id="rank-note"></div>
+        <!-- REGLA -->
+        <div id="rule"></div>
+
+        <!-- ======= PODIO (nuevo) ======= -->
+        <div id="podium-wrap" class="podium-wrap">
+          <div class="podium-title">🥇 Top 3</div>
+          <div id="podium" class="podium"></div>
+          <div class="hint" id="podium-hint"></div>
+        </div>
+
         <div class="updated" id="rank-updated"></div>
         <table>
           <thead>
@@ -184,18 +217,18 @@
   <footer id="footer">Votación 1–10 · Un voto por persona y bar · © Auzotik auzoarentzat</footer>
 
   <script>
-    /* ========= Config de hero ========= */
+    /* ========= Config ========= */
+    // Imagen de fondo
     const HERO_IMG = "https://markelmartinez.github.io/sistema-votacion/pintxos.jpg";
     const dynStyle = document.createElement('style');
-    dynStyle.textContent = `header{ --hero: url('${HERO_IMG}'); --hero-zoom: 0.82; }`;
+    dynStyle.textContent = `header{ --hero: url('${HERO_IMG}'); --hero-zoom: 0.85; }`;
     document.head.appendChild(dynStyle);
 
-    /* ========= BARES (para la pestaña de listado) ========= */
+    // ---------- URLs de bares (lista + fotos + direcciones) ----------
     const GVIZ_URL_BARES =
       "https://docs.google.com/spreadsheets/d/1o9-3b-GwN8Z8QEmTIBTAahP8sXPF8oMrn-AB7MQMTew/gviz/tq?tqx=out:json&gid=2039727451&tq=select%20A,C,F,H&headers=1";
 
-    /* ========= Respuestas individuales: 15 hojas (columna B) ========= */
-    // Pega aquí el bloque que me diste:
+    // ---------- Respuestas individuales por bar (B = nota) ----------
     const RESP_SHEETS = [
       { bar: "Lis Bar",            url: "https://docs.google.com/spreadsheets/d/1o9-3b-GwN8Z8QEmTIBTAahP8sXPF8oMrn-AB7MQMTew/gviz/tq?tqx=out:json&gid=1796407127&tq=select%20B%20where%20B%20is%20not%20null" },
       { bar: "Los Cachorros",      url: "https://docs.google.com/spreadsheets/d/1o9-3b-GwN8Z8QEmTIBTAahP8sXPF8oMrn-AB7MQMTew/gviz/tq?tqx=out:json&gid=1010400679&tq=select%20B%20where%20B%20is%20not%20null" },
@@ -225,11 +258,12 @@
         voteBtn: "Votar 1–10",
         mapsBtn: "Cómo llegar",
         updated: "Actualizado:",
-        note: "Ganará el bar con más puntos (suma de todas las notas). En caso de empate: más votos.",
         th_bar: "Bar",
         th_pts: "Puntos",
         th_votes: "Votos",
         th_avg: "Media",
+        rule: "El ganador será el bar con más puntos (suma de notas). En caso de empate, más votos.",
+        podium_hint: "Podium proporcional a los puntos.",
         footer: "Votación 1–10 · Un voto por persona y bar · © Auzotik auzoarentzat",
       },
       eu: {
@@ -241,11 +275,12 @@
         voteBtn: "Bozkatu 1-10",
         mapsBtn: "Nola iritsi",
         updated: "Eguneratua:",
-        note: "Irabazlea punturik gehien dituen taberna izango da (nota guztien batura). Berdinketa badago: bozka gehien dituenak.",
         th_bar: "Taberna",
         th_pts: "Puntuak",
         th_votes: "Bozkak",
         th_avg: "Batezbestekoa",
+        rule: "Irabazlea puntu gehien dituen taberna izango da (nota guztien batura). Berdinketan egotekotan, bozka gehien dituenak.",
+        podium_hint: "Podium-a puntu kopuruaren araberakoa da.",
         footer: "Bozketa 1–10 · Pertsona eta taberna bakoitzeko bozka bakarra · © Auzotik auzoarentzat",
       }
     };
@@ -270,16 +305,19 @@
       document.getElementById('th-votos').textContent = t.th_votes;
       document.getElementById('th-media').textContent = t.th_avg;
       document.getElementById('footer').textContent = t.footer;
-      document.getElementById('rank-note').textContent = t.note;
+      document.getElementById('rule').textContent = t.rule;
+      document.getElementById('podium-hint').textContent = t.podium_hint;
 
+      // botones dinámicos de las tarjetas (si ya hay)
       document.querySelectorAll('[data-i18n="voteBtn"]').forEach(a => a.textContent = t.voteBtn);
       document.querySelectorAll('[data-i18n="mapsBtn"]').forEach(a => a.textContent = t.mapsBtn);
 
+      // activar pills
       document.getElementById('btn-es').classList.toggle('active', LANG==='es');
       document.getElementById('btn-eu').classList.toggle('active', LANG==='eu');
     }
 
-    /* ========= GViz helper ========= */
+    /* ========= Helpers GViz ========= */
     async function fetchGViz(url){
       const nocache = (url.includes("?") ? "&" : "?") + "_=" + Date.now();
       const res = await fetch(url + nocache);
@@ -289,7 +327,6 @@
       return JSON.parse(text.slice(start, end + 1));
     }
 
-    /* ========= Fetch bares (listado) ========= */
     async function fetchBares(){
       const json = await fetchGViz(GVIZ_URL_BARES);
       const rows = json.table?.rows || [];
@@ -297,36 +334,33 @@
         .map(r => ({
           nombre:    r.c?.[0]?.v || "",
           link:      r.c?.[1]?.v || "",
-          direccion: r.c?.[2]?.v || "",
-          foto:      r.c?.[3]?.v || ""
+          direccion: r.c?.[2]?.v || "",  // F
+          foto:      r.c?.[3]?.v || ""   // H
         }))
         .filter(b => b.nombre && b.nombre !== "Bar" && b.link);
     }
 
-    /* ========= Fetch ranking desde 15 hojas ========= */
-    async function fetchRankingFromForms(){
-      const cargos = await Promise.all(RESP_SHEETS.map(async ({bar, url}) => {
+    // Agrupar respuestas de todos los sheets (sumas, votos, medias)
+    async function fetchRankingFromResponses(){
+      // Trae todas las notas (B) por bar
+      const all = await Promise.all(RESP_SHEETS.map(async ({bar, url})=>{
         try{
-          const data = await fetchGViz(url);
-          const vals = (data.table?.rows || [])
-            .map(r => r?.c?.[0]?.v)
-            .map(v => Number(String(v).replace(",", ".")))
-            .filter(v => Number.isFinite(v));      // sólo numéricos
-
-          const votos = vals.length;
-          const puntos = vals.reduce((a,b)=>a+b,0);
-          const media = votos ? (puntos / votos) : 0;
-
-          return { bar, puntos, votos, media };
+          const json = await fetchGViz(url);
+          const notas = (json.table?.rows || [])
+            .map(r => Number(r.c?.[0]?.v))
+            .filter(n => !isNaN(n));
+          const votos  = notas.length;
+          const puntos = notas.reduce((a,b)=>a+b, 0);
+          const media  = votos ? (puntos / votos) : 0;
+          return { bar, votos, puntos, media: Number(media.toFixed(2)) };
         }catch(e){
-          console.warn("Error leyendo", bar, e);
-          return { bar, puntos:0, votos:0, media:0 };
+          console.warn("Error respuestas", bar, e);
+          return { bar, votos:0, puntos:0, media:0 };
         }
       }));
-
-      // ordenar por puntos desc, luego votos desc
-      cargos.sort((a,b)=> (b.puntos - a.puntos) || (b.votos - a.votos));
-      return cargos;
+      // Orden: puntos desc, luego votos desc
+      all.sort((a,b)=>(b.puntos - a.puntos) || (b.votos - a.votos));
+      return all;
     }
 
     /* ========= UI: Bares ========= */
@@ -366,12 +400,52 @@
       empty.style.display = list.length ? 'none' : 'block';
     }
 
+    /* ========= PODIO (nuevo) ========= */
+    function renderPodium(rows){
+      const wrap = document.getElementById('podium-wrap');
+      const el   = document.getElementById('podium');
+      if(!rows.length || rows.every(r=>r.puntos===0 && r.votos===0)){
+        wrap.style.display = 'none';
+        el.innerHTML = '';
+        return;
+      }
+      wrap.style.display = 'block';
+
+      const top3 = rows.slice(0,3);
+      const maxPuntos = Math.max(...top3.map(r=>r.puntos), 1); // evitas /0
+      // Orden visual: 2º (izq), 1º (centro), 3º (dcha)
+      const order = [top3[1]||{bar:'',puntos:0}, top3[0]||{bar:'',puntos:0}, top3[2]||{bar:'',puntos:0}];
+
+      el.innerHTML = order.map((r,idx)=>{
+        const h = 60 + Math.round((r.puntos / maxPuntos) * 110); // 60–170px
+        const cls = idx===0 ? 'step step--silver' : (idx===1 ? 'step step--gold' : 'step step--bronze');
+        const medal = idx===1 ? '🥇' : (idx===0 ? '🥈' : '🥉');
+        const crown = idx===1 ? '<div class="crown">👑</div>' : '';
+        const pos   = idx===1 ? 1 : (idx===0 ? 2 : 3);
+
+        return `
+          <div class="col">
+            <div class="${cls}" style="height:${h}px">
+              ${crown}
+              <div class="medal">${medal} #${pos}</div>
+              <div class="points">${r.puntos}</div>
+            </div>
+            <div class="bar-name">${r.bar || ''}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
     /* ========= UI: Ranking ========= */
     const rankBody    = document.getElementById('rank-tbody');
     const rankUpdated = document.getElementById('rank-updated');
 
     function renderRanking(rows){
       const t = I18N[LANG];
+
+      // Podio dinámico
+      renderPodium(rows);
+
       rankBody.innerHTML = '';
       rows.forEach((r,i) => {
         const tr = document.createElement('tr');
@@ -416,7 +490,7 @@
       try {
         applyI18n();
         LISTA = await fetchBares(); renderBares(LISTA);
-        RANK_CACHE = await fetchRankingFromForms(); renderRanking(RANK_CACHE);
+        RANK_CACHE = await fetchRankingFromResponses(); renderRanking(RANK_CACHE);
       } catch(e){
         console.error(e);
         empty.style.display='block';
@@ -426,4 +500,3 @@
   </script>
 </body>
 </html>
-
