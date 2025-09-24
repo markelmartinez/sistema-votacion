@@ -3,6 +3,7 @@
 Proyecto 0 € para montar una votación popular de pintxos con **frontend estático** (GitHub Pages) y **backend “serverless”** sobre **Google Sheets + Google Forms**.  
 Sin bases de datos ni servidores: todo vive en tu hoja y en una página HTML.
 
+**App --> https://markelmartinez.github.io/sistema-votacion/**
 ---
 
 ## 🧩 Piezas del sistema
